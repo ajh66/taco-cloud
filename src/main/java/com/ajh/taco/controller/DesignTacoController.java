@@ -4,13 +4,15 @@ import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 
+import javax.validation.Valid;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import com.ajh.taco.common.Design;
 import com.ajh.taco.common.Ingredient;
 import com.ajh.taco.common.Ingredient.Type;
 import com.ajh.taco.domainobject.Taco;
@@ -39,14 +41,19 @@ public class DesignTacoController {
 		for (Type type : types) {
 			model.addAttribute(type.toString().toLowerCase(), filterByType(ingredients, type));
 		}
-		model.addAttribute("design", new Taco());
+		model.addAttribute("taco", new Taco()); // Object road show: controller(GET) -> view(th:object="${taco}") -> controller(POST)
 		return "design";
 	}
-	
+
 	@PostMapping
-	public String processDesign(Design design) {
-		log.info("Processing design: " + design);
-		
+	public String processDesign(@Valid Taco taco, Errors errors) {
+		log.info("Processing design: " + taco);
+
+		if (errors.hasErrors()) {
+			log.info("Error: " + errors);
+			return "design";
+		}
+
 		return "redirect:/orders/current";
 	}
 
