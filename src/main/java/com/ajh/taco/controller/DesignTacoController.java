@@ -1,4 +1,4 @@
-package com.ajh.taco;
+package com.ajh.taco.controller;
 
 import java.util.Arrays;
 import java.util.LinkedList;
@@ -10,7 +10,10 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import com.ajh.taco.Ingredient.Type;
+import com.ajh.taco.common.Design;
+import com.ajh.taco.common.Ingredient;
+import com.ajh.taco.common.Taco;
+import com.ajh.taco.common.Ingredient.Type;
 
 import lombok.extern.slf4j.Slf4j;
 

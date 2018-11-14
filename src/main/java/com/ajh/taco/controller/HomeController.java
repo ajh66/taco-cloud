@@ -1,4 +1,4 @@
-package com.ajh.taco;
+package com.ajh.taco.controller;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;

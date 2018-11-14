@@ -1,4 +1,4 @@
-package com.ajh.taco;
+package com.ajh.taco.common;
 
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
