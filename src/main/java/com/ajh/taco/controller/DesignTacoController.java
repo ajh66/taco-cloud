@@ -12,8 +12,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.ajh.taco.common.Design;
 import com.ajh.taco.common.Ingredient;
-import com.ajh.taco.common.Taco;
 import com.ajh.taco.common.Ingredient.Type;
+import com.ajh.taco.domainobject.Taco;
 
 import lombok.extern.slf4j.Slf4j;
 

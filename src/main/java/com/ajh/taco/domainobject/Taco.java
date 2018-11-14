@@ -1,4 +1,4 @@
-package com.ajh.taco.common;
+package com.ajh.taco.domainobject;
 
 import java.util.List;
 
