@@ -5,7 +5,7 @@ import java.util.List;
 import lombok.Data;
 
 @Data
-public class Taco {
+public class Taco { // Correspond to form fields in page design.html
 	private String name;
 	private List<String> ingredients;
 }
