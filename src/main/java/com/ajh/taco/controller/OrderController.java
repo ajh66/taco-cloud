@@ -6,6 +6,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -25,7 +26,20 @@ public class OrderController {
 		}});
 		return "orderForm";
 	}
-	
+
+	@GetMapping("/{id}")
+	public String orderFormById(@PathVariable("id") int id, Model model) {
+		model.addAttribute("order", new Order() {{
+			// Inline initialization block
+			setName("Andy");
+			setStreet("Zhongshan Road");
+			setCity("Nanjing");
+			setState("Jiangsu");
+			setZip("210000");
+		}});
+		return "orderForm";
+	}
+
 	@PostMapping
 	public String processOrder(@Valid Order order, Errors errors) {
 		log.info("Order submitted: " + order);
