@@ -3,6 +3,7 @@ package com.ajh.taco.controller;
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import javax.validation.Valid;
 
@@ -57,13 +58,7 @@ public class DesignTacoController {
 		return "redirect:/orders/current";
 	}
 
-	private Object filterByType(List<Ingredient> ingredients, Type type) {
-		List<Ingredient> list = new LinkedList<Ingredient>();
-		for (Ingredient ingredient : ingredients) {
-			if (ingredient.getType() == type) {
-				list.add(ingredient);
-			}
-		}
-		return list;
+	private List<Ingredient> filterByType(List<Ingredient> ingredients, Type type) {
+		return ingredients.stream().filter(x -> x.getType().equals(type)).collect(Collectors.toList());
 	}
 }
