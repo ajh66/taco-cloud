@@ -1,5 +1,7 @@
 package com.ajh.taco.domainobject;
 
+import java.util.Date;
+
 import javax.validation.constraints.Digits;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
@@ -10,6 +12,9 @@ import lombok.Data;
 
 @Data
 public class Order { // Correspond to form fields in page orderForm.html
+	private Long id;
+	private Date placedAt;
+
 	@NotBlank(message="Name is required")
 	private String name;
 	
