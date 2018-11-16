@@ -19,9 +19,10 @@ import lombok.extern.slf4j.Slf4j;
 public class OrderController {
 	@GetMapping("/current")
 	public String orderForm(Model model) {
-		Order order = new Order();
-		order.setName("Your name please");
-		model.addAttribute("order", order);
+		model.addAttribute("order", new Order() {{
+			// Inline initialization block
+			setName("Your name please");
+		}});
 		return "orderForm";
 	}
 	
