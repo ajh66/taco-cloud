@@ -22,5 +22,5 @@ public class Taco { // Correspond to form fields in page design.html
 
 	@NotEmpty(message="You must choose at least 1 ingredient")
 //	@Size(min=1, message="You must choose at least 1 ingredient")
-	private List<Ingredient> ingredients;
+	private List<Ingredient> ingredients; // Require class IngredientByIdConverter
 }
