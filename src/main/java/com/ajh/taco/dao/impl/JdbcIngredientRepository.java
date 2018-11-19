@@ -1,4 +1,4 @@
-package com.ajh.taco.dao;
+package com.ajh.taco.dao.impl;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -8,6 +8,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 import com.ajh.taco.common.Ingredient;
+import com.ajh.taco.dao.abst.IngredientRepository;
 
 @Repository
 public class JdbcIngredientRepository implements IngredientRepository {

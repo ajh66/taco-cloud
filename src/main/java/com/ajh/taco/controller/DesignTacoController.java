@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.SessionAttributes;
 
 import com.ajh.taco.common.Ingredient;
 import com.ajh.taco.common.Ingredient.Type;
-import com.ajh.taco.dao.IngredientRepository;
+import com.ajh.taco.dao.abst.IngredientRepository;
 import com.ajh.taco.domainobject.Taco;
 
 import lombok.extern.slf4j.Slf4j;

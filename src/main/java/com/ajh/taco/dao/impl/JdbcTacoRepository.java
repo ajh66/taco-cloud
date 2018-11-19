@@ -1,4 +1,4 @@
-package com.ajh.taco.dao;
+package com.ajh.taco.dao.impl;
 
 import java.sql.Timestamp;
 import java.sql.Types;
@@ -12,6 +12,7 @@ import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 
 import com.ajh.taco.common.Ingredient;
+import com.ajh.taco.dao.abst.TacoRepository;
 import com.ajh.taco.domainobject.Taco;
 
 public class JdbcTacoRepository implements TacoRepository {

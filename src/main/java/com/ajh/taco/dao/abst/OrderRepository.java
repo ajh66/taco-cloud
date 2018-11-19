@@ -1,4 +1,4 @@
-package com.ajh.taco.dao;
+package com.ajh.taco.dao.abst;
 
 import com.ajh.taco.domainobject.Order;
 
