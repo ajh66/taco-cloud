@@ -10,11 +10,13 @@ import org.springframework.jdbc.core.PreparedStatementCreator;
 import org.springframework.jdbc.core.PreparedStatementCreatorFactory;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
+import org.springframework.stereotype.Repository;
 
 import com.ajh.taco.common.Ingredient;
 import com.ajh.taco.dao.abst.TacoRepository;
 import com.ajh.taco.domainobject.Taco;
 
+@Repository
 public class JdbcTacoRepository implements TacoRepository {
 	private JdbcTemplate jdbc;
 
@@ -44,7 +46,7 @@ public class JdbcTacoRepository implements TacoRepository {
 			)
 		);
 		KeyHolder kh = new GeneratedKeyHolder();
-		jdbc.update(psc, kh);
+		jdbc.update(psc, kh); // A plain update() doesn't help to auto-generate an ID
 		return kh.getKey().longValue();
 	}
 	private void saveIngredientToTaco(Ingredient ingredient, long tacoId) {
