@@ -66,7 +66,7 @@ public class DesignTacoController {
 	}
 
 	@PostMapping
-	public String processDesign(@Valid Taco taco, Errors errors, @ModelAttribute Order order) {
+	public String processDesign(@Valid Taco taco, Errors errors, Model model) {
 		log.info("Processing design: " + taco);
 
 		if (errors.hasErrors()) {
@@ -74,6 +74,8 @@ public class DesignTacoController {
 			return "design";
 		}
 		Taco saved = designRepo.save(taco);
+
+		Order order = (Order)model.asMap().get("order"); // How to avoid using this silly type cast?
 		order.addDesign(saved);
 		log.info("Order list: " + order);
 
