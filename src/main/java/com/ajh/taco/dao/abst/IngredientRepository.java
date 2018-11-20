@@ -1,10 +1,9 @@
 package com.ajh.taco.dao.abst;
 
-import com.ajh.taco.common.Ingredient;
+import org.springframework.data.repository.CrudRepository;
 
-public interface IngredientRepository {
-	Iterable<Ingredient> findAll();
-	Ingredient findOne(String id);
-	Ingredient findById(String id);
-	Ingredient save(Ingredient ingredient);
+import com.ajh.taco.common.Ingredient;
+import com.ajh.taco.domainobject.Taco;
+
+public interface IngredientRepository extends CrudRepository<Ingredient, String> {
 }
