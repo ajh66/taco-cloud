@@ -50,6 +50,12 @@ public class OrderController {
 		return "orderForm";
 	}
 
+	@GetMapping("/all")
+	public String allOrders(Model model) {
+		model.addAttribute("orders", orderRepo.findAll());
+		return "orderList";
+	}
+
 	@PostMapping
 	public String processOrder(@Valid Order order, Errors errors, SessionStatus sessionStatus) {
 		log.info("Order submitted: " + order);
