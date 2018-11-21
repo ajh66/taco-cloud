@@ -22,7 +22,7 @@ import lombok.Data;
 
 @Data
 @Entity
-@Table(name="Taco_Order")
+@Table(name="Taco_Order") // JPA would default to persist entities to a table named "Order", but "order" is a reserved word in SQL
 public class Order implements Serializable { // Correspond to form fields in page orderForm.html
 	private static final long serialVersionUID = 1L;
 
