@@ -19,6 +19,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 		/*
 		 * All HTTP POST should contain CSRF token e.g.
 		 * <input type="hidden" name="_csrf" th:value="${_csrf.token}"/>
+		 * Or disable CSRF by .and().csrf().disable()
 		 * 
 		 * */
 		http.authorizeRequests()
@@ -29,7 +30,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 			.and()
 				.headers().frameOptions().disable() // For frames in h2-console
 			.and()
-				.formLogin() // Enable login form and auto-redirection to this page if necessary
+				.formLogin().defaultSuccessUrl("/design", true) // Enable login form and auto-redirection to this page if necessary
 		;
 	}
 
