@@ -51,6 +51,7 @@
         <input type="text" th:field="*{name}"/>
         <span class="validationError" th:if="${#fields.hasErrors('name')}" th:errors="*{name}">Name error</span>
         <br/>
+        <input type="hidden" name="_csrf" th:value="${_csrf.token}"/>
         <button>Submit your taco</button>
       </div>
     </form>
