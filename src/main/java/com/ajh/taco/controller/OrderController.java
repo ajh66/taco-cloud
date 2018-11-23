@@ -3,6 +3,7 @@ package com.ajh.taco.controller;
 import javax.validation.Valid;
 
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -36,6 +37,12 @@ public class OrderController {
 //			// Inline initialization block
 //			setName("Your name please");
 //		}});
+
+		User user = (User)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		if (user != null) {
+			Order order = (Order)model.asMap().get("order"); // How to avoid using this silly type cast?
+			order.setName(user.getUsername());
+		}
 
 		return "orderForm";
 	}
