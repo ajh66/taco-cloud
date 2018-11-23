@@ -1,0 +1,19 @@
+{
+  "properties": [
+    {
+      "name": "taco.security.sampleUserName",
+      "type": "java.lang.String",
+      "description": "Set sample user name for basic authentication."
+    },
+    {
+      "name": "taco.security.sampleUserRole",
+      "type": "java.lang.String",
+      "description": "Set sample user role for basic authentication."
+    },
+    {
+      "name": "taco.security.samplePassword",
+      "type": "java.lang.String",
+      "description": "Set sample user password for basic authentication."
+    }
+  ]
+}
