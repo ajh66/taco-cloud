@@ -18,13 +18,12 @@ import org.springframework.web.bind.support.SessionStatus;
 import com.ajh.taco.dao.abst.OrderRepository;
 import com.ajh.taco.domainobject.Order;
 
-import lombok.extern.slf4j.Slf4j;
-
-@Slf4j
 @Controller
 @RequestMapping("/orders")
 @SessionAttributes("order")
 public class OrderController {
+	private static final org.slf4j.Logger log = org.slf4j.LoggerFactory.getLogger(OrderController.class);
+
 	private OrderRepository orderRepo;
 
 	public OrderController(OrderRepository orderRepo) {

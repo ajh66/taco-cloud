@@ -1,8 +1,6 @@
 package com.ajh.taco.controller;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -25,13 +23,12 @@ import com.ajh.taco.dao.abst.TacoRepository;
 import com.ajh.taco.domainobject.Order;
 import com.ajh.taco.domainobject.Taco;
 
-import lombok.extern.slf4j.Slf4j;
-
-@Slf4j
 @Controller
 @RequestMapping("/design")
 @SessionAttributes("order") // An order attribute is kept in session and available across multiple requests.
 public class DesignTacoController {
+	private static final org.slf4j.Logger log = org.slf4j.LoggerFactory.getLogger(DesignTacoController.class);
+
 	private final IngredientRepository ingredientRepo;
 	private final TacoRepository designRepo;
 
