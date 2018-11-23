@@ -41,7 +41,11 @@ public class OrderController {
 		User user = (User)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		if (user != null) {
 			Order order = (Order)model.asMap().get("order"); // How to avoid using this silly type cast?
-			order.setName(user.getUsername());
+			if (order != null) {
+				order.setName(user.getUsername());
+			} else {
+				return "redirect:/design";
+			}
 		}
 
 		return "orderForm";

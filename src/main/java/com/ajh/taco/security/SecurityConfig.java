@@ -1,6 +1,5 @@
 package com.ajh.taco.security;
 
-import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -13,11 +12,13 @@ import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 
 @Configuration
 @EnableWebSecurity
-@ConfigurationProperties(prefix="taco.security")
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
-	private String sampleUserName;
-	private String samplePassword;
-	private String sampleUserRole;
+	private SecurityConfigProps scp;
+
+	public SecurityConfig(SecurityConfigProps scp) {
+		super();
+		this.scp = scp;
+	}
 
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
@@ -52,7 +53,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	protected UserDetailsService userDetailsService() {
 		@SuppressWarnings("deprecation")
 		UserDetails ud = User.withDefaultPasswordEncoder()
-				.username(this.sampleUserName).password(this.samplePassword).roles(this.sampleUserRole)
+				.username(scp.getSampleUserName()).password(scp.getSamplePassword()).roles(scp.getSampleUserRole())
 				.build();
 
 //		if (ud instanceof TacoUser) { // Ugly code to set user info
@@ -67,15 +68,4 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 		return new InMemoryUserDetailsManager(ud);
 	}
 
-	public void setSampleUserName(String sampleUserName) {
-		this.sampleUserName = sampleUserName;
-	}
-
-	public void setSamplePassword(String samplePassword) {
-		this.samplePassword = samplePassword;
-	}
-
-	public void setSampleUserRole(String sampleUserRole) {
-		this.sampleUserRole = sampleUserRole;
-	}
 }
