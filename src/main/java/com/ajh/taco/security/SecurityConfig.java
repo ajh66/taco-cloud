@@ -50,6 +50,15 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 				.username("user").password("user").roles("USER")
 				.build();
 
+//		if (ud instanceof TacoUser) { // Ugly code to set user info
+//			TacoUser tu = (TacoUser)ud;
+//			tu.setStreet("Zhongshan Road");
+//			tu.setCity("Nanjing");
+//			tu.setState("Jiangsu");
+//			tu.setZip("210000");
+//			tu.setPhone("025-12345678");
+//		}
+
 		return new InMemoryUserDetailsManager(ud);
 	}
 }

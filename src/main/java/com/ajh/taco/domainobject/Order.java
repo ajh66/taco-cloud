@@ -17,7 +17,6 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
 
 import org.hibernate.validator.constraints.CreditCardNumber;
-
 import lombok.Data;
 
 @Data
@@ -60,6 +59,9 @@ public class Order implements Serializable { // Correspond to form fields in pag
 	@ManyToMany(targetEntity=Taco.class)
 	private List<Taco> tacos = new ArrayList<>(); // Auto-generate table TACO_ORDER_TACOS
 	
+//	@ManyToOne
+//	private TacoUser user;
+
 	public void addDesign(Taco design) {
 		tacos.add(design);
 	}

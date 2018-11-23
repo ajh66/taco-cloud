@@ -2,6 +2,8 @@ package com.ajh.taco.controller;
 
 import javax.validation.Valid;
 
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
@@ -34,6 +36,7 @@ public class OrderController {
 //			// Inline initialization block
 //			setName("Your name please");
 //		}});
+
 		return "orderForm";
 	}
 
@@ -57,7 +60,7 @@ public class OrderController {
 	}
 
 	@PostMapping
-	public String processOrder(@Valid Order order, Errors errors, SessionStatus sessionStatus) {
+	public String processOrder(@Valid Order order, Errors errors, SessionStatus sessionStatus, @AuthenticationPrincipal User user) {
 		log.info("Order submitted: " + order);
 		
 		if (errors.hasErrors()) {
@@ -65,6 +68,7 @@ public class OrderController {
 			return "orderForm";
 		}
 
+//		order.setUser(user);
 		Order saved = orderRepo.save(order);
 		log.info("Order saved: " + saved);
 
