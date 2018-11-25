@@ -7,6 +7,8 @@ import java.util.stream.Collectors;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
@@ -14,6 +16,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttributes;
 
 import com.ajh.taco.common.Ingredient;
@@ -60,6 +63,13 @@ public class DesignTacoController {
 
 		model.addAttribute("taco", new Taco()); // Object road show: controller(GET) -> view(th:object="${taco}") -> controller(POST)
 		return "design";
+	}
+
+	@GetMapping("/recent")
+	@ResponseBody // Write directly to the body of response instead of rendering with a view
+	public Iterable<Taco> recentTacos() {
+		PageRequest page = PageRequest.of(0, 12, Sort.by("createdAt").descending());
+		return designRepo.findAll(page).getContent(); // JSON
 	}
 
 	@PostMapping
