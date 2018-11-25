@@ -15,9 +15,6 @@ import javax.validation.constraints.Size;
 
 import com.ajh.taco.common.Ingredient;
 
-import lombok.Data;
-
-@Data
 @Entity
 public class Taco { // Correspond to form fields in page design.html
 	@Id
@@ -34,9 +31,29 @@ public class Taco { // Correspond to form fields in page design.html
 	@NotEmpty(message="You must choose at least 1 ingredient")
 //	@Size(min=1, message="You must choose at least 1 ingredient")
 	private List<Ingredient> ingredients; // Auto-generate table TACO_INGREDIENTS
-	
+
 	@PrePersist // Set property createdAt to the current date & time before Taco is persisted
 	void createdAt() {
 		this.createdAt = new Date();
 	}
+
+	public String getName() {
+		return name;
+	}
+
+	public List<Ingredient> getIngredients() {
+		return ingredients;
+	}
+
+	public Date getCreatedAt() {
+		return createdAt;
+	}
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public void setIngredients(List<Ingredient> ingredients) {
+		this.ingredients = ingredients;
+	}
+
 }

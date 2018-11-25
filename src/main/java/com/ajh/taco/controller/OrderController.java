@@ -52,14 +52,20 @@ public class OrderController {
 
 	@GetMapping("/{id}")
 	public String orderFormById(@PathVariable("id") int id, Model model) {
-		model.addAttribute("order", new Order() {{
-			// Inline initialization block
-			setName("Andy");
-			setStreet("Zhongshan Road");
-			setCity("Nanjing");
-			setState("Jiangsu");
-			setZip("210000");
-		}});
+		model.addAttribute("order", new Order() {
+			/**
+			 * Oops: Eclipse complains about no auto-generated serialVersionUID without definition showed below.
+			 */
+			private static final long serialVersionUID = 1L;
+			{
+				// Inline initialization block
+				setName("Andy");
+				setStreet("Zhongshan Road");
+				setCity("Nanjing");
+				setState("Jiangsu");
+				setZip("210000");
+			}
+		});
 		return "orderForm";
 	}
 
