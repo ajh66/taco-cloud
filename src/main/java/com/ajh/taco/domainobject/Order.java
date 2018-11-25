@@ -17,9 +17,7 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
 
 import org.hibernate.validator.constraints.CreditCardNumber;
-import lombok.Data;
 
-@Data
 @Entity
 @Table(name="Taco_Order") // JPA would default to persist entities to a table named "Order", but "order" is a reserved word in SQL
 public class Order implements Serializable { // Correspond to form fields in page orderForm.html
@@ -62,6 +60,29 @@ public class Order implements Serializable { // Correspond to form fields in pag
 //	@ManyToOne
 //	private TacoUser user;
 
+	public Order() {
+		// TODO
+	}
+
+	public Order(
+			@NotBlank(message = "Name is required") String name,
+			@NotBlank(message = "Street is required") String street,
+			@NotBlank(message = "City is required") String city, @NotBlank(message = "State is required") String state,
+			@NotBlank(message = "Zip code is required") String zip,
+			@CreditCardNumber(message = "Not a valid credit card number") String ccNumber,
+			@Pattern(regexp = "^(0[1-9]|1[0-2])([\\/])([1-9][0-9])$", message = "Must be formatted MM/YY") String ccExpiration,
+			@Digits(integer = 3, fraction = 0, message = "Invalid CVV") String ccCVV) {
+		super();
+		this.name = name;
+		this.street = street;
+		this.city = city;
+		this.state = state;
+		this.zip = zip;
+		this.ccNumber = ccNumber;
+		this.ccExpiration = ccExpiration;
+		this.ccCVV = ccCVV;
+	}
+
 	public void addDesign(Taco design) {
 		tacos.add(design);
 	}
@@ -69,5 +90,77 @@ public class Order implements Serializable { // Correspond to form fields in pag
 	@PrePersist
 	void placedAt() {
 		this.placedAt = new Date();
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public String getStreet() {
+		return street;
+	}
+
+	public String getCity() {
+		return city;
+	}
+
+	public String getState() {
+		return state;
+	}
+
+	public String getZip() {
+		return zip;
+	}
+
+	public String getCcNumber() {
+		return ccNumber;
+	}
+
+	public String getCcExpiration() {
+		return ccExpiration;
+	}
+
+	public String getCcCVV() {
+		return ccCVV;
+	}
+
+	public List<Taco> getTacos() {
+		return tacos;
+	}
+
+	public Date getPlacedAt() {
+		return placedAt;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public void setStreet(String street) {
+		this.street = street;
+	}
+
+	public void setCity(String city) {
+		this.city = city;
+	}
+
+	public void setState(String state) {
+		this.state = state;
+	}
+
+	public void setZip(String zip) {
+		this.zip = zip;
+	}
+
+	public void setCcNumber(String ccNumber) {
+		this.ccNumber = ccNumber;
+	}
+
+	public void setCcExpiration(String ccExpiration) {
+		this.ccExpiration = ccExpiration;
+	}
+
+	public void setCcCVV(String ccCVV) {
+		this.ccCVV = ccCVV;
 	}
 }
