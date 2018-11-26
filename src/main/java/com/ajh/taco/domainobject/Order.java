@@ -83,6 +83,13 @@ public class Order implements Serializable { // Correspond to form fields in pag
 		this.ccCVV = ccCVV;
 	}
 
+	@Override
+	public String toString() {
+		return "Order{id='" + id + "', placedAt='" + placedAt + "', name='" + name + "', street='" + street + "', city='" + city
+				+ "', state='" + state + "', zip='" + zip + "', ccNumber='" + ccNumber + "', ccExpiration='" + ccExpiration
+				+ "', ccCVV='" + ccCVV + "', tacos=" + tacos + "}";
+	}
+
 	public void addDesign(Taco design) {
 		tacos.add(design);
 	}

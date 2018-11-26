@@ -28,8 +28,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 		 * Or disable CSRF by .and().csrf().disable()
 		 * 
 		 * */
+//		http.csrf().disable();
 		http.authorizeRequests()
-				.antMatchers("/design", "/orders", "/orders/**").hasRole("USER")
+				.antMatchers("/design", "/design/**", "/orders", "/orders/**").hasRole("USER")
 				.antMatchers("/", "/**").permitAll()
 			.and() // Finish authorization configuration and ready to apply additional HTTP configuration
 				.csrf().ignoringAntMatchers("/h2-console/**") // Special case for CSRF

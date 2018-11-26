@@ -32,9 +32,18 @@ public class Taco { // Correspond to form fields in page design.html
 //	@Size(min=1, message="You must choose at least 1 ingredient")
 	private List<Ingredient> ingredients; // Auto-generate table TACO_INGREDIENTS
 
+	@Override
+	public String toString() {
+		return "Taco{id='" + id + "', createdAt='" + createdAt + "', name='" + name + "', ingredients=" + ingredients + "}";
+	}
+
 	@PrePersist // Set property createdAt to the current date & time before Taco is persisted
 	void createdAt() {
 		this.createdAt = new Date();
+	}
+
+	public Long getId() {
+		return id;
 	}
 
 	public String getName() {
