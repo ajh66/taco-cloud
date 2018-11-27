@@ -13,9 +13,12 @@ import javax.persistence.PrePersist;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
 
+import org.springframework.data.rest.core.annotation.RestResource;
+
 import com.ajh.taco.common.Ingredient;
 
 @Entity
+@RestResource(rel="tacos", path="tacos")
 public class Taco { // Correspond to form fields in page design.html
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO) // Rely on the DB to automatically generate the ID value
