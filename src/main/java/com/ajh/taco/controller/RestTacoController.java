@@ -1,7 +1,12 @@
 package com.ajh.taco.controller;
 
+import java.util.List;
+
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
+import org.springframework.hateoas.Resource;
+import org.springframework.hateoas.Resources;
+import org.springframework.hateoas.mvc.ControllerLinkBuilder;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -30,9 +35,13 @@ public class RestTacoController {
 	}
 
 	@GetMapping("/recent") // REST API /design/recent
-	public Iterable<Taco> recentTacos() {
+	public Resources<Resource<Taco>> recentTacos() {
 		PageRequest page = PageRequest.of(0, 12, Sort.by("createdAt").descending());
-		return tacoRepo.findAll(page).getContent(); // JSON
+		List<Taco> tacos = tacoRepo.findAll(page).getContent(); // JSON
+		Resources<Resource<Taco>> recentResources = Resources.wrap(tacos);
+//		recentResources.add(ControllerLinkBuilder.linkTo(RestTacoController.class).slash("recent").withRel("recents"));
+		recentResources.add(ControllerLinkBuilder.linkTo(ControllerLinkBuilder.methodOn(RestTacoController.class).recentTacos()).withRel("recents"));
+		return recentResources;
 	}
 
 	@GetMapping("/byid/{id}") // REST API /design/{id}
@@ -48,7 +57,7 @@ public class RestTacoController {
 	// 403 Forbidden due to CSRF protection. How to fix?
 	@PostMapping(path="/taco", consumes="application/json")
 	@ResponseStatus(HttpStatus.CREATED)
-	public Taco postTaco(@RequestBody Taco taco) {
+	public Taco postTaco(@RequestBody Taco taco) { // Annotation @RequestBody ensures that JSON in the request body is bound to Taco object.
 		log.info("POST /design/taco");
 		return tacoRepo.save(taco);
 	}
