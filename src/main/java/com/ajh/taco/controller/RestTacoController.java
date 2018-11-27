@@ -4,7 +4,6 @@ import java.util.List;
 
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
-import org.springframework.hateoas.Resource;
 import org.springframework.hateoas.Resources;
 import org.springframework.hateoas.mvc.ControllerLinkBuilder;
 import org.springframework.http.HttpStatus;
@@ -20,6 +19,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.ajh.taco.dao.abst.TacoRepository;
 import com.ajh.taco.domainobject.Taco;
+import com.ajh.taco.hateoas.TacoResource;
+import com.ajh.taco.hateoas.TacoResourceAssembler;
 
 @RestController
 @RequestMapping(path="/design", produces="application/json")
@@ -35,10 +36,11 @@ public class RestTacoController {
 	}
 
 	@GetMapping("/recent") // REST API /design/recent
-	public Resources<Resource<Taco>> recentTacos() {
+	public Resources<TacoResource> recentTacos() {
 		PageRequest page = PageRequest.of(0, 12, Sort.by("createdAt").descending());
 		List<Taco> tacos = tacoRepo.findAll(page).getContent(); // JSON
-		Resources<Resource<Taco>> recentResources = Resources.wrap(tacos);
+		List<TacoResource> tacoResources = new TacoResourceAssembler().toResources(tacos);
+		Resources<TacoResource> recentResources = new Resources<TacoResource>(tacoResources);
 //		recentResources.add(ControllerLinkBuilder.linkTo(RestTacoController.class).slash("recent").withRel("recents"));
 		recentResources.add(ControllerLinkBuilder.linkTo(ControllerLinkBuilder.methodOn(RestTacoController.class).recentTacos()).withRel("recents"));
 		return recentResources;
