@@ -1,0 +1,10 @@
+spring:
+  data:
+    rest:
+      base-path: /api
+
+taco:
+  security:
+    sampleUserName: andy
+    samplePassword: 1234
+    sampleUserRole: USER

@@ -13,7 +13,7 @@ import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
-	private SecurityConfigProps scp;
+	private final SecurityConfigProps scp;
 
 	public SecurityConfig(SecurityConfigProps scp) {
 		super();
