@@ -1,5 +1,9 @@
 # Personal practice of examples in book "Spring in Action, 5th edition"
-Run with `mvn spring-boot:run`
+Run app with `mvn spring-boot:run`
+
+Run test with `mvn test`
+
+Run specific test with e.g. `mvn -Dtest=HomeControllerTest test`
 
 H2 DB console
 ```
