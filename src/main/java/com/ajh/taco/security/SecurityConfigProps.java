@@ -2,12 +2,14 @@ package com.ajh.taco.security;
 
 import javax.validation.constraints.NotBlank;
 import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.annotation.Validated;
 
 @Component
 @ConfigurationProperties(prefix="taco.security")
 @Validated
+@Profile("development")
 public class SecurityConfigProps {
 	@NotBlank(message="sampleUserName is required")
 	private String sampleUserName;

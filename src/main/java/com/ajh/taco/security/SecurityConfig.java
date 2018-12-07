@@ -2,6 +2,7 @@ package com.ajh.taco.security;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Profile;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
@@ -9,15 +10,23 @@ import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
+import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
+import org.springframework.security.web.csrf.CsrfTokenRepository;
 
 @Configuration
 @EnableWebSecurity
+@Profile("development")
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	private final SecurityConfigProps scp;
 
 	public SecurityConfig(SecurityConfigProps scp) {
 		super();
 		this.scp = scp;
+	}
+
+	@Bean
+	public CsrfTokenRepository csrfTokenRepository() {
+		return CookieCsrfTokenRepository.withHttpOnlyFalse();
 	}
 
 	@Override
@@ -32,6 +41,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 		http.authorizeRequests()
 				.antMatchers("/design", "/design/**", "/orders", "/orders/**").hasRole("USER")
 				.antMatchers("/", "/**").permitAll()
+			.and()
+				.csrf().csrfTokenRepository(csrfTokenRepository())
 			.and() // Finish authorization configuration and ready to apply additional HTTP configuration
 				.csrf().ignoringAntMatchers("/h2-console/**") // Special case for CSRF
 			.and()

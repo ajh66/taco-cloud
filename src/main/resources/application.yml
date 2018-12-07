@@ -1,7 +1,13 @@
 spring:
+  profiles:
+    active: development
   data:
     rest:
       base-path: /api
+
+---
+spring:
+  profiles: development
 
 taco:
   security:

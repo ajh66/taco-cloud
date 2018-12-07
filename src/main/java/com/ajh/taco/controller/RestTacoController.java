@@ -46,7 +46,7 @@ public class RestTacoController {
 		return recentResources;
 	}
 
-	@GetMapping("/byid/{id}") // REST API /design/{id}
+	@GetMapping("/byid/{id}") // REST API /design/byid/{id}
 	public ResponseEntity<Taco> tacoById(@PathVariable("id") Long id) {
 		java.util.Optional<Taco> taco = tacoRepo.findById(id);
 		if (taco.isPresent()) {
