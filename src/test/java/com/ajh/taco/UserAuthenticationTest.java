@@ -26,6 +26,8 @@ import com.ajh.taco.security.SecurityConfigProps;
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment=WebEnvironment.RANDOM_PORT)
 public class UserAuthenticationTest {
+	private static final org.slf4j.Logger log = org.slf4j.LoggerFactory.getLogger(UserAuthenticationTest.class);
+
 	@Autowired
 	private CsrfTokenRepository csrfTokenRepo;
 
@@ -35,7 +37,9 @@ public class UserAuthenticationTest {
 	@Autowired
 	private TestRestTemplate rest;
 
-	@SuppressWarnings("serial")
+	/*
+	 * CSRF token works in this case
+	 * */
 	@Test
 	public void testLogin() {
 		CsrfToken csrfToken = csrfTokenRepo.generateToken(null);
@@ -54,16 +58,12 @@ public class UserAuthenticationTest {
 //				.withBasicAuth("andy", "1234")
 				.postForEntity("/login", request, String.class);
 
-//		System.out.println("Body: " + response.getBody()); // Should be null
-//		System.out.println("Location: " + response.getHeaders().get("Location"));
-//		System.out.println("Location: " + response.getHeaders().get("Content-Length"));
+//		log.info("Body: " + response.getBody()); // Should be null
+//		log.info("Location: " + response.getHeaders().getLocation());
 
 		assertThat(response.getStatusCode()).isEqualTo(HttpStatus.FOUND); // 302 FOUND
-		assertThat(response.getHeaders().get("Content-Length")).isEqualTo(
-				new ArrayList<String>() {{
-					add("0"); // Length 0 of null body
-				}}
-		);
+		assertThat(response.getHeaders().getContentLength()).isEqualTo(0);
+		assertThat(response.getHeaders().getLocation().toString().matches("http://localhost:[0-9]+/design")).isEqualTo(true);
 
 //		ResponseEntity<String> result = rest.withBasicAuth("andy", "1234")
 //				.getForEntity("/design", String.class);

@@ -44,7 +44,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 			.and()
 				.csrf().csrfTokenRepository(csrfTokenRepository())
 			.and() // Finish authorization configuration and ready to apply additional HTTP configuration
-				.csrf().ignoringAntMatchers("/h2-console/**") // Special case for CSRF
+				.csrf().ignoringAntMatchers("/design/**", "/h2-console/**") // Special case for CSRF
 			.and()
 				.headers().frameOptions().disable() // For frames in h2-console
 			.and()
@@ -67,15 +67,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 		UserDetails ud = User.withDefaultPasswordEncoder()
 				.username(scp.getSampleUserName()).password(scp.getSamplePassword()).roles(scp.getSampleUserRole())
 				.build();
-
-//		if (ud instanceof TacoUser) { // Ugly code to set user info
-//			TacoUser tu = (TacoUser)ud;
-//			tu.setStreet("Zhongshan Road");
-//			tu.setCity("Nanjing");
-//			tu.setState("Jiangsu");
-//			tu.setZip("210000");
-//			tu.setPhone("025-12345678");
-//		}
 
 		return new InMemoryUserDetailsManager(ud);
 	}

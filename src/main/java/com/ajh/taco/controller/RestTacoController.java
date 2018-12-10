@@ -61,6 +61,7 @@ public class RestTacoController {
 	@ResponseStatus(HttpStatus.CREATED)
 	public Taco postTaco(@RequestBody Taco taco) { // Annotation @RequestBody ensures that JSON in the request body is bound to Taco object.
 		log.info("POST /design/taco");
+		log.info("Taco: " + taco);
 		return tacoRepo.save(taco);
 	}
 }

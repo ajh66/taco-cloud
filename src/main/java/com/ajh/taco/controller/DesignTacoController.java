@@ -71,7 +71,7 @@ public class DesignTacoController {
 			return "design";
 		}
 		Taco saved = designRepo.save(taco);
-
+		log.info("Taco: " + saved);
 		Order order = (Order)model.asMap().get("order"); // How to avoid using this silly type cast?
 		order.addDesign(saved);
 		log.info("Order list: " + order);
