@@ -30,3 +30,27 @@ More recently, with the introduction of `Spring Boot`, automatic configuration h
 Spring Boot is an extension of the Spring Framework that offers several productivity ***enhancements***. The most well-known of these enhancements is 
 `autoconfiguration`, where Spring Boot can make ***reasonable guesses*** of what components need to be configured and wired together, 
 based on entries in the classpath, environment variables, and other factors.
+
+Annotation *@Configuration*
+---
+In recent versions of Spring, however, a Java-based configuration is more common. The following Java-based configuration class is equivalent to the XML configuration:
+```
+@Configuration
+public class ServiceConfiguration {
+  @Bean
+  public InventoryService inventoryService() {
+    return new InventoryService();
+  }
+ 
+  @Bean
+  public ProductService productService() {
+    return new ProductService(inventoryService());
+  }
+}
+```
+The @Configuration annotation indicates to Spring that this is a configuration class 
+that will provide beans to the Spring application context. The configuration’s class methods 
+are annotated with @Bean, indicating that ***the objects they return*** should be ***added as beans*** 
+in the application context (where, by default, their respective bean IDs will 
+be the same as the names of the methods that define them).
+
