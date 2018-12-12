@@ -34,7 +34,7 @@ based on entries in the classpath, environment variables, and other factors.
 Annotation *@Configuration*
 ---
 In recent versions of Spring, however, a Java-based configuration is more common. The following Java-based configuration class is equivalent to the XML configuration:
-```
+```java
 @Configuration
 public class ServiceConfiguration {
   @Bean
