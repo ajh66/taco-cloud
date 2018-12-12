@@ -42,7 +42,10 @@ public class RestTacoController {
 		List<TacoResource> tacoResources = new TacoResourceAssembler().toResources(tacos);
 		Resources<TacoResource> recentResources = new Resources<TacoResource>(tacoResources);
 //		recentResources.add(ControllerLinkBuilder.linkTo(RestTacoController.class).slash("recent").withRel("recents"));
-		recentResources.add(ControllerLinkBuilder.linkTo(ControllerLinkBuilder.methodOn(RestTacoController.class).recentTacos()).withRel("recents"));
+		recentResources.add(
+			ControllerLinkBuilder
+				.linkTo(ControllerLinkBuilder.methodOn(RestTacoController.class).recentTacos())
+				.withRel("recents"));
 		return recentResources;
 	}
 

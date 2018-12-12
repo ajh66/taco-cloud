@@ -2,8 +2,6 @@ package com.ajh.taco;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import java.util.ArrayList;
-
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,7 +24,7 @@ import com.ajh.taco.security.SecurityConfigProps;
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment=WebEnvironment.RANDOM_PORT)
 public class UserAuthenticationTest {
-	private static final org.slf4j.Logger log = org.slf4j.LoggerFactory.getLogger(UserAuthenticationTest.class);
+//	private static final org.slf4j.Logger log = org.slf4j.LoggerFactory.getLogger(UserAuthenticationTest.class);
 
 	@Autowired
 	private CsrfTokenRepository csrfTokenRepo;

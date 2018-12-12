@@ -1,8 +1,10 @@
 package com.ajh.taco;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.Assert.assertEquals;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import org.json.JSONArray;
@@ -16,6 +18,7 @@ import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -25,6 +28,10 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 
+import com.ajh.taco.common.Ingredient;
+import com.ajh.taco.common.Ingredient.Type;
+import com.ajh.taco.dao.abst.TacoRepository;
+import com.ajh.taco.domainobject.Taco;
 import com.ajh.taco.security.SecurityConfigProps;
 
 @RunWith(SpringRunner.class)
@@ -43,6 +50,9 @@ public class RestTacoControllerTest {
 
 	private String jsessionid = null;
 	private String xsrftoken = null;
+
+	@Autowired
+	private TacoRepository tacoRepo;
 
 	@Before
 	public void login() {
@@ -138,6 +148,44 @@ public class RestTacoControllerTest {
 				.postForEntity("/design/taco", request, String.class);
 		log.info("Body: " + response.getBody());
 		assertThat(response.getStatusCode()).isEqualTo(HttpStatus.CREATED);
+
+	}
+
+	@Test
+	public void getRecentTacos() throws Exception {
+		Taco[] tacos = new Taco[13]; // Only create 13 references not instances
+		int i=0;
+		for (Taco taco : tacos) {
+			taco = tacos[i] = new Taco(); // Not working with "taco = new Taco();"
+			taco.setName(new String("taco" + i));
+			taco.setIngredients(new ArrayList<Ingredient>() {
+				private static final long serialVersionUID = 1L; // For anonymous inner class
+				{
+					add(new Ingredient("FLTO", "Flour Tortilla", Type.WRAP));
+					add(new Ingredient("CARN", "Carnitas"      , Type.PROTEIN));
+					add(new Ingredient("LETC", "Lettuce"       , Type.VEGGIES));
+					add(new Ingredient("JACK", "Monterrey Jack", Type.CHEESE));
+					add(new Ingredient("SRCR", "Sour Cream"    , Type.SAUCE));
+				}
+			});
+			i++;
+		}
+		tacoRepo.saveAll(Arrays.asList(tacos)); // Save to database
+
+		HttpHeaders headers = new HttpHeaders();
+		headers.setContentType(MediaType.APPLICATION_JSON);
+		if (this.jsessionid != null) {
+			headers.add("Cookie", this.jsessionid);
+		}
+		HttpEntity<String> req = new HttpEntity<String>("", headers);
+		ResponseEntity<String> rsp = rest.exchange("/design/recent", HttpMethod.GET, req, String.class);
+//		log.info("Body: " + rsp.getBody());
+
+		assertThat(rsp.getStatusCode()).isEqualTo(HttpStatus.OK);
+		assertThat(rsp.getHeaders().getContentType()).isEqualTo(MediaType.APPLICATION_JSON_UTF8);
+
+		JSONObject json = new JSONObject(rsp.getBody());
+		assertEquals(((JSONObject)json.get("_embedded")).getJSONArray("tacos").length(), 12);
 
 	}
 }
