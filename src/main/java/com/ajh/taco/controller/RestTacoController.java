@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.ajh.taco.config.TacoConfigProps;
 import com.ajh.taco.dao.abst.TacoRepository;
 import com.ajh.taco.domainobject.Taco;
 import com.ajh.taco.hateoas.TacoResource;
@@ -29,15 +30,17 @@ public class RestTacoController {
 	private static final org.slf4j.Logger log = org.slf4j.LoggerFactory.getLogger(DesignTacoController.class);
 
 	private TacoRepository tacoRepo;
+	private TacoConfigProps tacoConfig;
 
-	public RestTacoController(TacoRepository tacoRepo) {
+	public RestTacoController(TacoRepository tacoRepo, TacoConfigProps tacoConfig) {
 		super();
 		this.tacoRepo = tacoRepo;
+		this.tacoConfig = tacoConfig;
 	}
 
 	@GetMapping("/recent") // REST API /design/recent
 	public Resources<TacoResource> recentTacos() {
-		PageRequest page = PageRequest.of(0, 12, Sort.by("createdAt").descending());
+		PageRequest page = PageRequest.of(0, tacoConfig.getPageSize(), Sort.by("createdAt").descending());
 		List<Taco> tacos = tacoRepo.findAll(page).getContent(); // JSON
 		List<TacoResource> tacoResources = new TacoResourceAssembler().toResources(tacos);
 		Resources<TacoResource> recentResources = new Resources<TacoResource>(tacoResources);

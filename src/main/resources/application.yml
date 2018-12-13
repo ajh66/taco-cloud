@@ -10,6 +10,8 @@ spring:
   profiles: development
 
 taco:
+  config:
+    page-size: 10
   security:
     sampleUserName: andy
     samplePassword: 1234

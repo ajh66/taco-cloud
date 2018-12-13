@@ -30,6 +30,7 @@ import org.springframework.util.MultiValueMap;
 
 import com.ajh.taco.common.Ingredient;
 import com.ajh.taco.common.Ingredient.Type;
+import com.ajh.taco.config.TacoConfigProps;
 import com.ajh.taco.dao.abst.TacoRepository;
 import com.ajh.taco.domainobject.Taco;
 import com.ajh.taco.security.SecurityConfigProps;
@@ -53,6 +54,9 @@ public class RestTacoControllerTest {
 
 	@Autowired
 	private TacoRepository tacoRepo;
+
+	@Autowired
+	private TacoConfigProps tacoConfig;
 
 	@Before
 	public void login() {
@@ -153,7 +157,7 @@ public class RestTacoControllerTest {
 
 	@Test
 	public void getRecentTacos() throws Exception {
-		Taco[] tacos = new Taco[13]; // Only create 13 references not instances
+		Taco[] tacos = new Taco[tacoConfig.getPageSize()+1]; // Only create references not instances
 		int i=0;
 		for (Taco taco : tacos) {
 			taco = tacos[i] = new Taco(); // Not working with "taco = new Taco();"
@@ -185,7 +189,7 @@ public class RestTacoControllerTest {
 		assertThat(rsp.getHeaders().getContentType()).isEqualTo(MediaType.APPLICATION_JSON_UTF8);
 
 		JSONObject json = new JSONObject(rsp.getBody());
-		assertEquals(((JSONObject)json.get("_embedded")).getJSONArray("tacos").length(), 12);
+		assertEquals(((JSONObject)json.get("_embedded")).getJSONArray("tacos").length(), tacoConfig.getPageSize());
 
 	}
 }
