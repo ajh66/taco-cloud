@@ -2,50 +2,71 @@ package com.ajh.taco.domainobject;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
+import java.util.UUID;
 
 import javax.validation.constraints.NotNull;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.ManyToMany;
-import javax.persistence.PrePersist;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
 
+import org.springframework.data.cassandra.core.cql.Ordering;
+import org.springframework.data.cassandra.core.cql.PrimaryKeyType;
+import org.springframework.data.cassandra.core.mapping.Column;
+import org.springframework.data.cassandra.core.mapping.PrimaryKeyColumn;
+import org.springframework.data.cassandra.core.mapping.Table;
 import org.springframework.data.rest.core.annotation.RestResource;
 
 import com.ajh.taco.common.Ingredient;
+import com.ajh.taco.common.IngredientUDT;
+import com.datastax.driver.core.utils.UUIDs;
 
-@Entity
+@Table("tacos")
 @RestResource(rel="tacos", path="tacos")
 public class Taco { // Correspond to form fields in page design.html
-	@Id
-	@GeneratedValue(strategy=GenerationType.AUTO) // Rely on the DB to automatically generate the ID value
-	private Long id;
+	@PrimaryKeyColumn(type=PrimaryKeyType.PARTITIONED)
+	private UUID id = UUIDs.timeBased();
 
-	private Date createdAt;
+	@PrimaryKeyColumn(type=PrimaryKeyType.CLUSTERED, ordering=Ordering.DESCENDING)
+	private Date createdAt = new Date();
 
 	@NotNull
 	@Size(min=5, message="Name must be at least 5 characters long")
 	private String name;
 
-	@ManyToMany(targetEntity=Ingredient.class) // Declare relationship between Taco and Ingredient
+	@Column("ingredients")
 	@NotEmpty(message="You must choose at least 1 ingredient")
 //	@Size(min=1, message="You must choose at least 1 ingredient")
-	private List<Ingredient> ingredients; // Auto-generate table TACO_INGREDIENTS
+	private List<IngredientUDT> ingredients; // Can’t use the Ingredient class as a user-defined type,
+											 // because the @Table annotation has already mapped it as an entity
+											 // for persistence in Cassandra.
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(createdAt, id, ingredients, name);
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj) {
+			return true;
+		}
+		if (obj == null) {
+			return false;
+		}
+		if (!(obj instanceof Taco)) {
+			return false;
+		}
+		Taco other = (Taco) obj;
+		return Objects.equals(createdAt, other.createdAt) && Objects.equals(id, other.id)
+				&& Objects.equals(ingredients, other.ingredients) && Objects.equals(name, other.name);
+	}
 
 	@Override
 	public String toString() {
 		return "Taco{id='" + id + "', createdAt='" + createdAt + "', name='" + name + "', ingredients=" + ingredients + "}";
 	}
 
-	@PrePersist // Set property createdAt to the current date & time before Taco is persisted
-	void createdAt() {
-		this.createdAt = new Date();
-	}
-
-	public Long getId() {
+	public UUID getId() {
 		return id;
 	}
 
@@ -53,18 +74,23 @@ public class Taco { // Correspond to form fields in page design.html
 		return name;
 	}
 
-	public List<Ingredient> getIngredients() {
+	public List<IngredientUDT> getIngredients() {
 		return ingredients;
 	}
 
 	public Date getCreatedAt() {
 		return createdAt;
 	}
+	
+	public void setId(UUID id) {
+		this.id = id;
+	}
+
 	public void setName(String name) {
 		this.name = name;
 	}
 
-	public void setIngredients(List<Ingredient> ingredients) {
+	public void setIngredients(List<IngredientUDT> ingredients) {
 		this.ingredients = ingredients;
 	}
 

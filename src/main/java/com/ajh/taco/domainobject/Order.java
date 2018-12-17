@@ -4,30 +4,27 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.UUID;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.ManyToMany;
-import javax.persistence.PrePersist;
-import javax.persistence.Table;
 import javax.validation.constraints.Digits;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
 
 import org.hibernate.validator.constraints.CreditCardNumber;
+import org.springframework.data.cassandra.core.mapping.Column;
+import org.springframework.data.cassandra.core.mapping.PrimaryKey;
+import org.springframework.data.cassandra.core.mapping.Table;
 
-@Entity
-@Table(name="Taco_Order") // JPA would default to persist entities to a table named "Order", but "order" is a reserved word in SQL
+import com.datastax.driver.core.utils.UUIDs;
+
+@Table("taco_orders")
 public class Order implements Serializable { // Correspond to form fields in page orderForm.html
 	private static final long serialVersionUID = 1L;
 
-	@Id
-	@GeneratedValue(strategy=GenerationType.AUTO)
-	private Long id;
+	@PrimaryKey
+	private UUID id = UUIDs.timeBased();
 
-	private Date placedAt;
+	private Date placedAt = new Date();
 
 	@NotBlank(message="Name is required")
 	private String name;
@@ -54,8 +51,8 @@ public class Order implements Serializable { // Correspond to form fields in pag
 	@Digits(integer=3, fraction=0, message="Invalid CVV")
 	private String ccCVV;
 
-	@ManyToMany(targetEntity=Taco.class)
-	private List<Taco> tacos = new ArrayList<>(); // Auto-generate table TACO_ORDER_TACOS
+	@Column("tacos")
+	private List<TacoUDT> tacos = new ArrayList<>();
 	
 //	@ManyToOne
 //	private TacoUser user;
@@ -65,13 +62,13 @@ public class Order implements Serializable { // Correspond to form fields in pag
 	}
 
 	public Order(
-			@NotBlank(message = "Name is required") String name,
-			@NotBlank(message = "Street is required") String street,
-			@NotBlank(message = "City is required") String city, @NotBlank(message = "State is required") String state,
-			@NotBlank(message = "Zip code is required") String zip,
-			@CreditCardNumber(message = "Not a valid credit card number") String ccNumber,
-			@Pattern(regexp = "^(0[1-9]|1[0-2])([\\/])([1-9][0-9])$", message = "Must be formatted MM/YY") String ccExpiration,
-			@Digits(integer = 3, fraction = 0, message = "Invalid CVV") String ccCVV) {
+		@NotBlank(message = "Name is required") String name,
+		@NotBlank(message = "Street is required") String street,
+		@NotBlank(message = "City is required") String city, @NotBlank(message = "State is required") String state,
+		@NotBlank(message = "Zip code is required") String zip,
+		@CreditCardNumber(message = "Not a valid credit card number") String ccNumber,
+		@Pattern(regexp = "^(0[1-9]|1[0-2])([\\/])([1-9][0-9])$", message = "Must be formatted MM/YY") String ccExpiration,
+		@Digits(integer = 3, fraction = 0, message = "Invalid CVV") String ccCVV) {
 		super();
 		this.name = name;
 		this.street = street;
@@ -90,13 +87,8 @@ public class Order implements Serializable { // Correspond to form fields in pag
 				+ "', ccCVV='" + ccCVV + "', tacos=" + tacos + "}";
 	}
 
-	public void addDesign(Taco design) {
+	public void addDesign(TacoUDT design) {
 		tacos.add(design);
-	}
-	
-	@PrePersist
-	void placedAt() {
-		this.placedAt = new Date();
 	}
 
 	public String getName() {
@@ -131,7 +123,7 @@ public class Order implements Serializable { // Correspond to form fields in pag
 		return ccCVV;
 	}
 
-	public List<Taco> getTacos() {
+	public List<TacoUDT> getTacos() {
 		return tacos;
 	}
 

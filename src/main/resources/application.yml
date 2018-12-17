@@ -8,6 +8,10 @@ spring:
 ---
 spring:
   profiles: development
+  data:
+    cassandra:
+      keyspace-name: tacocloud
+      schema-action: recreate-drop-unused
 
 taco:
   config:

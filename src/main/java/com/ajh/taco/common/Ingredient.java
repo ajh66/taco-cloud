@@ -1,11 +1,11 @@
 package com.ajh.taco.common;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
+import org.springframework.data.cassandra.core.mapping.PrimaryKey;
+import org.springframework.data.cassandra.core.mapping.Table;
 
-@Entity // Mark as JPA entity
+@Table("ingredients")
 public class Ingredient {
-	@Id // Designate it as the property that will uniquely identify the entity in the database
+	@PrimaryKey
 	private String id;
 	private String name;
 	private Type type;
